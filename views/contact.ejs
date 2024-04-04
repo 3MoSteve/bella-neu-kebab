@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt</title>
+    <link rel="stylesheet" href="/contact.css">
+    <link rel="stylesheet" href="/main.css">
+    
+</head>
+<body>
+    <%- include('./Components/Navbar')%>
+        <div class="contact-form">
+            <h2>Kontaktiere uns</h2>
+            <form>
+                <div class="form-group">
+                    <label for="firstName">Vorname:</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Nachname:</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefonnummer:</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="message">Nachricht:</label>
+                    <textarea id="message" name="message" rows="6" maxlength="2000" minlength="100" required></textarea>
+                </div>
+                <button type="button" id="sendbtn">Senden</button>
+            </form>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+        <script>
+            function beforesetup(event) {
+                let firstName = document.getElementById("firstName").value;
+                let lastName = document.getElementById("lastName").value;
+                let email = document.getElementById("email").value;
+                let phone = document.getElementById("phone").value;
+                let message = document.getElementById("message");
+                if (firstName == "" || lastName == "" || email == "" || ((message == "") || (message.length < 100) || (message.length > 2000) )) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Bitte füllen Sie alle Felder aus',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    fetch("/contact", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            phone: phone,
+                            message: message.value
+                        })
+                    }).then(async res => {
+                        if (!res.ok) {
+                            Swal.fire({
+                        icon:'error',
+                        title: (await res.text()) || "Unbekannten Fehler, Bitte erneut versuchen!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                        } else {
+                            Swal.fire({
+                        icon:'success',
+                        title: (await res.text())|| "Unbekannten Fehler, Bitte erneut versuchen!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then((_) => {
+                        message.value = "";
+
+                    });
+                        }
+                    })
+                }
+            }
+            document.querySelector("#sendbtn").onclick = beforesetup;
+        </script>
+</body>
+</html>

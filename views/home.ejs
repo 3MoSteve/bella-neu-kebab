@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Seite</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/main.css">
+    
+    
+</head>
+<body>
+    <%- include('./Components/Navbar') %>
+
+
+    <div class="main-content">
+        <div class="section">
+            <h1 class="big-title">Bella Kebab</h1>
+            <p class="description">Welcome to Bella Kebab! We serve delicious kebabs made with fresh ingredients.</p>
+        </div>
+        
+        <div class="gallery">
+            <!-- Gallery items will be dynamically added here -->
+        </div>
+
+        <div style="border: 1px solid #ccc;max-width: 50vw;position: relative;left: 20vw;padding: 10px 10px;" class="section">
+            <h1 style="color:#410c72;">Worauf warten Sie?</h1>
+
+            <button class="btn" onclick='window.location.href="/order"'>Jetzt Bestellen</button>
+        </div>
+    </div>
+    <footer>
+        <%-include('./Components/Footer')%>
+    </footer>
+    <script>
+        var photos = [
+            { image: "/images/image1.jpg", description: "Description of Image 1" },
+            { image: "/images/image2.jpg", description: "Description of Image 2" },
+            { image: "/images/image3.jpg", description: "Description of Image 3" },
+            { image: "/images/image4.jpg", description: "Description of Image 4" }
+        ];
+
+        function showPhoto(index) {
+    var galleryItems = document.querySelectorAll('.gallery-item');
+    galleryItems.forEach(item => item.classList.remove("active", "noactive")); // Remove 'active' class from all items
+    galleryItems[index].classList.add('active'); // Add 'active' class to current item
+    galleryItems.forEach((item, key) => {
+        if (key == index) {
+            item.classList.add("active");
+        } else item.classList.add("noactive");
+    })
+}
+
+// Populate the gallery with photos
+var galleryHTML = '';
+photos.forEach((photo, index) => {
+    galleryHTML += `
+        <div class="gallery-item" id="gallery-item-${index}">
+            <img src="${photo.image}" alt="Image ${index + 1}">
+            <div class="description">${photo.description}</div>
+        </div>
+    `;
+});
+document.querySelector('.gallery').innerHTML = galleryHTML;
+document.querySelectorAll('.gallery-item').forEach(item => {
+    item.onclick = e => {
+        showPhoto(parseInt(item.id.split("-")?.[2]))
+    }
+})
+showPhoto(0);
+
+    </script>
+    <!-- <%- include('./Components/Footer')%> -->
+</body>
+</html>

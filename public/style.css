@@ -1,0 +1,79 @@
+
+.gallery {
+    position: relative; /* Make the gallery container relative for absolute positioning of arrows */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.section {
+    text-align: center; /* Center align content */
+    margin-top: 50px; /* Add top margin for spacing */
+}
+
+.big-title {
+    font-family: 'Arial Black', sans-serif; /* Verwende eine passende Schriftart */
+    color: white; /* Blaue Farbe */
+    text-transform: uppercase; /* Großbuchstaben verwenden */
+    text-shadow: 3px 3px 0 #8b8f94, 6px 6px 0 #3d4042; /* Zwei Schatten für den 3D-Effekt */
+    font-size: 2.5rem; /* Adjust title font size */
+}
+
+.description {
+    font-size: 1rem; /* Adjust description font size */
+    margin-top: 20px; /* Add top margin for spacing */
+}
+
+/* Responsive Styles */
+@media only screen and (max-width: 600px) {
+    .big-title {
+        font-size: 2rem; /* Adjust title font size for smaller screens */
+    }
+
+    .description {
+        font-size: 0.9rem; /* Adjust description font size for smaller screens */
+    }
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 80%;
+    border-radius: 10px;
+    
+}
+.gallery-item {
+    color: white;
+    width: 300px;
+    margin: 20px;
+    padding: 5px 5px;
+    border: 1px solid #4b4646;
+    box-shadow: 0 6px 8px rgb(255, 255, 255);
+    overflow: hidden;
+    opacity: 0.3; /* Initially hide all gallery items */
+    transition: opacity 0.5s ease; /* Add transition for smooth opacity change */
+}
+
+.gallery-item.noactive {
+    color: transparent;
+    text-shadow: 0px 0px 5px rgba(0,0,0,.5) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    
+}
+
+.gallery-item.active {
+    opacity: 1; /* Show active gallery item */
+}
+
+.description {
+    padding: 10px;
+}
+
+
+
+/* Responsive Styles */
+@media only screen and (max-width: 600px) {
+    .gallery-item {
+        width: calc(100% - 40px); /* Adjust width for smaller screens */
+        margin: 10px 20px; /* Adjust margin for smaller screens */
+    }
+}

@@ -1,0 +1,91 @@
+/* styles.css */
+
+/* Global Styles */
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container p {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 100px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Cart Item Styles */
+.cart-item {
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item-image {
+    width: 200px;
+    height: auto;
+}
+
+.cart-item-details {
+    padding: 20px;
+}
+
+.cart-item-name {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.cart-item-description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.cart-item-price {
+    font-size: 1.2rem;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.finish-order-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn {
+    display: block;
+    margin: 0 0;
+    padding: 10px 20px;
+    background-color: red;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+    color: white;
+}
+
+.finish-order-btn:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,12 @@
+
+
+/* Background Animation */
+body {
+    margin: 0;
+    
+    padding: 0;
+    background: linear-gradient(to left, #007bff, #00bfff); /* Mix of blue colors */
+    
+}
+
+/* Star Animation */

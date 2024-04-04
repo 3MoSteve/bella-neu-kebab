@@ -1,0 +1,79 @@
+[
+    {
+        "name": "Pizza",
+        "id": "123",
+        "description": "Delicious pizza with various toppings",
+        "price": 10,
+        "image": "/images/foods/pizza.jpg",
+        "sizes": [
+            {
+                "name": "Small",
+                "price": 0
+            },
+            {
+                "name": "Medium",
+                "price": 2
+            },
+            {
+                "name": "Large",
+                "price": 4
+            }
+        ],
+        "extras": [
+            {
+                "name": "Cheese",
+                "price": 1,
+                "type": "check"
+            },
+            {
+                "name": "Bacon",
+                "price": 1,
+                "type": "check"
+            },
+            {
+                "name": "Scharf",
+                "price": 0,
+                "type": "check"
+            },
+            {
+                "name": "Soße",
+                "price": 0.50,
+                "type": "select",
+                "value": ["Chilli Soße", "Süß-sauer Soße", "BBQ Soße"]
+            }
+        ],
+        "zutaten": [
+            "Tomaten",
+            "Paprika",
+            "Zwiebeln"
+        ]
+    },
+    {
+        "name": "Burger",
+        "id": "321",
+        "description": "Juicy burger with fresh ingredients",
+        "price": 8,
+        "image": "/images/foods/burger.jpg",
+        "zutaten": [
+            "Tomaten",
+            "Chilli",
+            "Käse"
+        ],
+        "extras": [
+            {
+                "name": "Cheese",
+                "price": 0.50,
+                "type": "number",
+                "min": 0,
+                "max": 5
+            },
+            {
+                "name": "Bacon",
+                "price": 0.50,
+                "type": "number",
+                "min": 0,
+                "max": 5
+            }
+        ]
+    }
+]

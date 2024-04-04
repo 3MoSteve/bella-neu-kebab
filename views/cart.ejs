@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="/cart.css">
+    <link rel="stylesheet" href="/main.css">
+    
+</head>
+<body>
+    <%- include('./Components/Navbar')%>
+    <div class="container">
+        <h1 style="color: white;">Warenkorb</h1>
+        <div id="cartItems"></div>
+        <button id="finishOrderBtn" class="finish-order-btn">Jetzt Bestellen</button>
+    </div>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/script/cart.js"></script>
+</body>
+</html>

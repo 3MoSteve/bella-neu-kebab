@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/navbar.css">
+<script>
+    let params = new URLSearchParams(location.search);
+    function viewdash() {
+        window.location.href = `/admin/dash?pass=${params.get("pass")}`;
+    }
+    function vieweditor() {
+
+        window.location.href = `/admin/editor?pass=${params.get("pass")}`;
+    }
+    function viewhome() {window.location.href = "/"};
+    function viewmsgs() {window.location.href = `/admin/msgs?pass=${params.get("pass")}`};
+    
+</script>
+<nav class="navbar">
+    
+    <div class="navbar-brand">
+        <span class="navbar-title"><a href="/" class="nav-link">Bella Kebab</a></span>
+    </div>
+    <ul class="navbar-nav">
+        
+        <button type="button" class="btn"  onclick="viewhome()">Home</button>    
+        <button type="button" class="btn"  onclick="viewdash()">Bestellungen</button>
+        <button type="button" class="btn" onclick="vieweditor()">Bearbeiten</button>
+        <button type="button" class="btn" onclick="viewmsgs()">Nachrichten</button>
+        
+    
+    </ul>
+    
+
+   
+</nav>

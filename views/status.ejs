@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bestellstatus</title>
+    <link rel="stylesheet" href="/status.css">
+    <link rel="stylesheet" href="/main.css">
+    
+</head>
+<body>
+    <%-include('./Components/Navbar')%>
+    <%if(hideorshow){%>
+    <div class="container">
+        <h1>Bestellstatus</h1>
+
+        <!-- Informationen des Bestellers -->
+        <div class="customer-info">
+            <h2>Kundeninformationen</h2>
+            <p><strong>Vorname:</strong> <%= data.user.firstName %></p>
+            <p><strong>Nachname:</strong> <%= data.user.lastName %></p>
+            <p><strong>Adresse:</strong> <%= data.user.street %> <%=data.user.postalCode%> <%=data.user.city%></p>
+            <p><strong>Bestell-Nr:</strong> <%= data.number %></p>
+        </div>
+        <div class="order-table">
+            <h2>Bestellungen</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bestellung Datum</th>
+                        <th>Bestell Status</th>
+                        <th>Aktion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td><%= data.date %></td>
+                            <td>
+                                <img class="status-img" src="/images/status/<%=data.status%>.png" alt="123">
+                                <p><%= data.status==0?"Im Bearbeitung":data.status==1?"Wird geliefert..":data.status==2?"Geliefert!":"??" %></p>
+                            </td>
+                            <%if(data.status != 2) {%>
+                                <td>
+                                    <button class="delete-btn" onclick="_delete(<%=data.number%>)">Löschen</button>
+                                </td>
+                                <%}%>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <%} else {%>
+        <h1>Die Bestellung wurde gelöscht oder existiert nicht mehr!</h1>
+        <h1><a href="/order">Nochmal Bestellen</a></h1>
+        <%}%>
+    <script defer>
+        function _delete(number) {
+            location.href = `/foods/${number}/delete`
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Seite</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+    <link rel="stylesheet" href="/main.css">
+    <style>
+        /* Global Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.4); /* Hintergrundfarbe der Tabelle mit Transparenz */
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid white;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1); /* Transparentes Weiß für Tabellenkopf */
+        }
+
+        /* Button Style */
+        .show-message-btn, .del-message-btn {
+            padding: 8px 16px;
+            background-color: #007bff; /* Blaue Farbe für Taste */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .del-message-btn {
+            background-color: red !important;
+        }
+        
+
+        .show-message-btn:hover {
+            background-color: #0056b3; /* Dunkleres Blau beim Hover */
+        }
+    </style>
+</head>
+<body>
+    <%- include('./Components/Adminnavbar')%>
+    <h1 style="text-align: center;">Admin Seite - Nachrichten</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Vorname</th>
+                <th>Nachname</th>
+                <th>Email</th>
+                <th>Telefonnummer</th>
+                <th>Datum</th>
+                <th>Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% msgs.forEach(msg => { %>
+                <tr>
+                    <td><%= msg.firstName %></td>
+                    <td><%= msg.lastName %></td>
+                    <td><%= msg.email %></td>
+                    <td><%= msg.phone %></td>
+                    <td><%= msg.date %></td>
+                    <td>
+                        <button class="show-message-btn" data-msg="<%=msg.message%>">Nachricht Zeigen</button>
+                        <button class="del-message-btn" data-uid="<%=msg.uid%>">Löschen</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+        const _dat = new URLSearchParams(window.location.search);
+
+        document.querySelectorAll("button").forEach(btn => {
+            btn.addEventListener("click", function () {
+                if (this.getAttribute("data-msg")) {
+                swal({
+                    title: "Nachricht",
+                    text: this.getAttribute("data-msg"),
+                    icon: "info",
+                    showCloseButton: true,
+                    
+                })
+            } else {
+
+                let uid = this.getAttribute("data-uid");
+                if (uid) {
+                    fetch("/admin/contact", {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": _dat.get("pass")
+                        },
+                        body: JSON.stringify({
+                            uid: uid
+                        })
+                    }).then(async res => {
+                        if (res.ok) {
+                            swal({
+                                icon: "success",
+                                title: "Nachricht erfolgreisch gelöscht!",
+                                timer: 1500
+                            }).then(r => {
+                                this.parentElement.parentElement.remove();
+                            })
+                        } else {
+                            swal({icon: "warning", title: "Unbekannten Fehler!", timer: 1500})
+                        }
+                    })
+                }
+            }
+            })
+        })
+    </script>
+</body>
+</html>

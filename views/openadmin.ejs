@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Seite</title>
+    <link rel="stylesheet" href="/firstadmin.css">
+    <link rel="stylesheet" href="/main.css">
+    
+</head>
+<body>
+    <%-include("./Components/Navbar")%>
+    <div class="container">
+        <h1>Admin Anmeldung</h1>
+            <div class="form-group">
+                <label for="password">Passwort:</label>
+                <input type="password" id="password" name="password" class="password-input" required>
+            </div>
+            <button type="button" id="confirm" class="login-btn">Anmelden</button>
+    </div>
+
+    <script>
+        let btn = document.querySelector("#confirm");
+        let pass = document.querySelector("#password");
+        btn.addEventListener("click", () => {
+            location.href = `/admin/dash?pass=${pass.value}`
+        });
+    </script>
+</body>
+</html>

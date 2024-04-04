@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/admin.css">
+    <link rel="stylesheet" href="/main.css">
+    
+</head>
+<body>
+    <%-include('./Components/Adminnavbar')%>
+    <div class="container">
+        <h1>Admin Panel</h1>
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Bestell Nr</th>
+                    <th>Vorname</th>
+                    <th>Nachname</th>
+                    <th>Adresse</th>
+                    <th>Status</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                    <tr>
+                        <td><%= order.number %></td>
+                        <td><%= order.user.firstName %></td>
+                        <td><%= order.user.lastName %></td>
+                        <td><%= order.user.street %>, <%= order.user.postalCode %> <%= order.user.city %></td>
+                        <td><%= order.status==0?"Im Bearbeitung":order.status==1?"Im Lieferung":order.status==2?"Geliefert":"Unbekannt" %></td>
+                        <td>
+                            <button class="view-order-btn" data-order-number="<%= order.number %>">Bestellung Ansehen</button>
+                            <button class="change-status-btn" data-order-number="<%= order.number %>">Status ändern</button>
+                            <button class="delete-order-btn" data-order-number="<%= order.number %>">Bestellung löschen</button>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="/script/admin.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <link rel="stylesheet" href="/order.css">
+    <link rel="stylesheet" href="/main.css">
+    
+</head>
+<body>
+
+    <%- include('./Components/Navbar')%>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for food...">
+    </div>
+    
+    <div class="food-container">
+        <% foods.forEach(food => { %>
+            <div class="food-item">
+                <div class="food-image">
+                    <img src="<%= food.image %>" alt="<%= food.name %>">
+                </div>
+                <h2 class="food-name"><%= food.name %></h2>
+                <p class="food-description"><%= food.description %></p>
+                <p class="food-price">$<%= food.price %></p>
+                <button class="order-button" onclick="order(<%= food.id %>)">Order Now</button>
+            </div>
+        <% }) %>
+    </div>
+
+    <script>
+        // JavaScript for filtering foods based on search input
+        const searchInput = document.getElementById('searchInput');
+        const foodItems = document.querySelectorAll('.food-item');
+
+        searchInput.addEventListener('input', () => {
+            const searchValue = searchInput.value.toLowerCase();
+            foodItems.forEach(item => {
+                const foodName = item.querySelector('.food-name').textContent.toLowerCase();
+                if (foodName.includes(searchValue)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function order(item) {
+            fetch("/foods/"+item, {
+                method: "GET"
+            }).then(async res => {
+                if (!res.ok) {
+                    Swal.fire("Fehler", "Unerwartender Fehler ist aufgetaucht beim Bestellen, bitte Versuchen Sie später erneut!", "error");
+                } else {
+        let data = await res.json();
+
+        const foodName = data.name;
+        const foodId = data.id;
+        const foodDescription = data.description;
+        const foodPrice = data.price;
+        const foodImage = data.image;
+        const foodSizes = data.sizes || [];
+        const foodExtras = data.extras || [];
+        let totalPrice = foodPrice; // Anfangspreis mit Basispreis des Essens
+
+// HTML für die Größenoptionen
+let sizeOptions = foodSizes.length == 0 ? null : "";
+foodSizes.forEach(size => {
+    sizeOptions += `<option value="${size.name}" data-price="${size.price}">${size.name}</option>`;
+});
+
+
+// HTML für die Extras
+let extrasHTML = '';
+foodExtras.forEach(extra => {
+    if (extra.type === 'check') {
+        extrasHTML += `
+            <p><input type="checkbox" class="extra-checkbox" data-name="${extra.name}" data-price="${extra.price}"> ${extra.name}</p>
+        `;
+    } else if (extra.type === 'select') {
+        let selectOptions = '';
+        extra.value.forEach(option => {
+            selectOptions += `<option value="${option}" data-price="${extra.price}">${option}</option>`;
+        });
+        extrasHTML += `
+            <p><strong>${extra.name}:</strong> <select class="extra-select" data-name="${extra.name}" data-price="${extra.price}">${selectOptions}</select></p>
+        `;
+    }
+});
+
+Swal.fire({
+    title: '<strong>Auswahl Bestätigung</strong>',
+    html: `
+        <img src="${foodImage}" style="width: 100%;" alt="${foodName}">
+        <div style="margin-top: 10px;">
+            <p><strong>Essen:</strong> ${foodName}</p>
+            <p><strong>Beschreibung:</strong> ${foodDescription}</p>
+            ${sizeOptions != null ? (`<p><strong>Größe:</strong> <select id="sizeSelect">${sizeOptions}</select></p>`) : ''}
+            <div id="extrasContainer">${extrasHTML}</div>
+            <p><strong>Total:</strong> $<span id="totalPrice">${totalPrice.toFixed(2)}</span></p>
+        </div>
+    `,
+    showCloseButton: true,
+    showCancelButton: true,
+    focusConfirm: false,
+    confirmButtonText: 'Bestellen',
+    confirmButtonColor: '#007bff',
+    cancelButtonText: 'Abbrechen',
+    cancelButtonColor: '#dc3545',
+    didOpen: () => {
+        // Event-Listener für Änderungen an Größe und Extras
+        document.getElementById('sizeSelect').addEventListener('change', updateTotalPrice);
+        document.querySelectorAll('.extra-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotalPrice);
+        });
+        document.querySelectorAll('.extra-select').forEach(select => {
+            select.addEventListener('change', updateTotalPrice);
+        });
+    },
+    preConfirm: () => {
+        const selectedSize = document.getElementById('sizeSelect')?.value;
+        const selectedExtras = [];
+        document.querySelectorAll('.extra-checkbox:checked').forEach(checkbox => {
+            selectedExtras.push({
+                name: checkbox.dataset.name,
+                price: parseFloat(checkbox.dataset.price)
+            });
+        });
+        document.querySelectorAll('.extra-select').forEach(select => {
+            const selectedOption = select.options[select.selectedIndex];
+            selectedExtras.push({
+                name: select.dataset.name,
+                value: selectedOption.value,
+                price: parseFloat(selectedOption.dataset.price)
+            });
+        });
+
+        return {
+            name: foodName,
+            id: foodId,
+            size: selectedSize,
+            extras: selectedExtras,
+            totalPrice: totalPrice.toFixed(2),
+            image: foodImage
+        };
+    }
+}).then(result => {
+    if (result.isConfirmed) {
+        let cart = JSON.parse(localStorage?.cart || "{}");
+        cart[Math.random().toString(36).slice(2)+Date.now()] = result.value;
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+});
+
+// Funktion zur Aktualisierung des Gesamtpreises
+function updateTotalPrice() {
+    totalPrice = foodPrice; // Basispreis zurücksetzen
+
+    // Preis je nach ausgewählter Größe aktualisieren
+    const selectedSizePrice = parseFloat(document.getElementById('sizeSelect').selectedOptions[0].dataset.price);
+    totalPrice += selectedSizePrice;
+
+    // Preis je nach ausgewählten Extras aktualisieren
+    document.querySelectorAll('.extra-checkbox:checked').forEach(checkbox => {
+        totalPrice += parseFloat(checkbox.dataset.price);
+    });
+    document.querySelectorAll('.extra-select').forEach(select => {
+        const selectedOption = select.options[select.selectedIndex];
+        totalPrice += parseFloat(selectedOption.dataset.price);
+    });
+
+    document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+}
+        }
+    });
+    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, #007bff, #00bfff); /* Gradient background color */
+    padding: 10px 20px;
+    border-radius: 10px;
+    
+}
+
+.navbar button {
+    margin-right: 10px;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.navbar-nav {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-item {
+    margin: 0 10px;
+}
+
+.nav-link {
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid transparent;
+    
+    border-radius: 10px;
+    transition: border-color .7s ease;
+}
+
+.nav-link:hover {
+    border-color: #fff; /* Animation on border line */
+}
+
+.navbar-button {
+    margin-left: auto;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Hintergrundfarbe */
+    color: #fff; /* Textfarbe */
+    font-size: 16px; /* Schriftgröße */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Animation beim Hover */
+}
+
+/* Hover-Effekt */
+.btn:hover {
+    background-color: #0056b3; /* Dunklere Hintergrundfarbe */
+}
+
+
+/* Responsive Styles */
+@media only screen and (max-width: 600px) {
+    .navbar {
+        padding: 10px; /* Adjust padding for smaller screens */
+        flex-direction: column; /* Stack items vertically */
+        align-items: flex-start; /* Align items to the start */
+    }
+
+    .navbar-nav {
+        margin-top: 10px; /* Add space between navbar brand and nav items */
+    }
+
+    .nav-item {
+        margin: 10px 0; /* Add space between nav items */
+    }
+
+    .navbar-button {
+        margin-left: 0; /* Reset margin for button */
+        margin-top: 10px; /* Add space between nav items and button */
+    }
+}
